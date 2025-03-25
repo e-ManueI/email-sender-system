@@ -3,8 +3,9 @@ import json
 from django.http import JsonResponse
 from django.views import View
 import pandas as pd
+from rest_framework.views import APIView
 
-class UploadExcelView(View):
+class UploadExcelView(APIView):
     def post(self, request):
         try:
             file = request.FILES['file']
