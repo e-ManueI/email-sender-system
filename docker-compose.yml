@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  # frontend: // Issues with turbopack
+  #   build: ./email-sender-frontend
+  #   ports:
+  #     - "3000:3000"
+  #   volumes:
+  #     - ./email-sender-frontend:/app
+  #   environment:
+  #     - WATCHPACK_POLLING=true
+  #   depends_on:
+  #     - backend
+
+  backend:
+    build: ./email-sender-backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./email-sender-backend:/app
+    depends_on:
+      - rabbitmq
+    environment:
+      - PYTHONUNBUFFERED=1
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+
+  worker:
+    build: ./email-sender-backend
+    command: python manage.py run_worker
+    volumes:
+      - ./email-sender-backend:/app
+    depends_on:
+      - backend
+      - rabbitmq
+    environment:
+      - PYTHONUNBUFFERED=1
