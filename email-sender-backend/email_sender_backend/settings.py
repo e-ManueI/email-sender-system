@@ -25,14 +25,7 @@ SECRET_KEY = 'django-insecure-%%chpwbk9wcoiz%--ry7ul)&4t3)$+%c89g#%$s-b2od*x*w6n
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [
-    "localhost",
-    "127.0.0.1",
-    "host.docker.internal",
-    "backend",  # Docker Compose service name
-]
-
-
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -46,21 +39,39 @@ INSTALLED_APPS = [
     
     'rest_framework',
     'core',
+    'corsheaders',
 ]
 
+CORS_ALLOW_ALL_ORIGINS = True
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "http://localhost:3001",
+    "http://127.0.0.1:3000",
+    "http://127.0.0.1:3001",
+    
+]
+
+CORS_ORIGIN_WHITELIST = [
+    'http://localhost:3000',
+    "http://127.0.0.1:3000",
+    "http://127.0.0.1:3001",
+    'http://localhost:3001',
+]
 # CSRF_COOKIE_HTTPONLY = False  # allows JS to read it
 # CSRF_COOKIE_SAMESITE = 'Lax'  # or 'None' if using https and cross-origin
 # CSRF_COOKIE_SECURE = False    # True if using HTTPS
-# CSRF_TRUSTED_ORIGINS = [
-#     "http://localhost:3000",
-#     "http://127.0.0.1:3000",
-# ]
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+]
 
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
+    "corsheaders.middleware.CorsMiddleware",
+    "django.middleware.common.CommonMiddleware",
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
